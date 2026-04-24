@@ -1,0 +1,15 @@
+coralforge:
+  # Toggle entire item categories
+  enable-coral-set: true
+  enable-abyssal-set: true
+  enable-pressure-set: true
+  enable-void-set: true
+  enable-weapons: true
+  enable-utilities: true
+  enable-machines: true
+
+  # Armor effect tick interval (in ticks, 20 = 1 second)
+  armor-effect-interval: 30
+
+  # Workbench settings
+  workbench-output-slot: 22

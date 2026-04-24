@@ -1,0 +1,456 @@
+================================================================
+  CoralForge Addon
+  Hardcore Item & Armor System
+  Plan & Implementation Guide
+  Survival Slimefun — Underwater Edition
+================================================================
+
++------------+-------------------------------------------------------------------+
+| Addon      | CoralForge                                                        |
++------------+-------------------------------------------------------------------+
+| Depends On | Slimefun4 2024.3.1  │  GuizhanLibPlugin 1.8.1  │  OceanMinerGrow  |
++------------+-------------------------------------------------------------------+
+| Platform   | Paper 1.21+                                                       |
++------------+-------------------------------------------------------------------+
+| Filosofi   | Semua item WAJIB pakai material OceanMiner — tidak ada shortcut   |
++------------+-------------------------------------------------------------------+
+| Kesulitan  | SANGAT SULIT — resep didesain agar endgame butuh grinding panjang |
++------------+-------------------------------------------------------------------+
+
++------------------------------------------+
+| 1.  Material Drop Table (OceanMinerGrow) |
++------------------------------------------+
+
+Semua bahan CoralForge berasal dari OceanMinerGrow. Tidak ada material yang bisa didapat dari vanilla atau sumber lain. Drop rate sengaja dibuat kecil untuk memastikan progression panjang.
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Repo referensi: github.com/Syaaddd/OceanMinerGrow — item ID dan data material diambil dari addon ini. Pastikan OceanMinerGrow ter-install sebelum CoralForge diload. |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+## Drop Table Lengkap
+
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Rarity    | Item               | Mesin Req. | Zona Y | Drop Rate | Catatan                                     |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Common    | Coral Dust         | MK1–MK4    | Y ≤ 44 | 22%       | Drop paling sering, tapi masih butuh banyak |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Common    | Pearlstone         | MK1–MK4    | Y ≤ 44 | 18%       | Sering drop tapi jumlah per drop kecil (1)  |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Uncommon  | Abyssite           | MK1–MK4    | Y ≤ 24 | 8%        | Butuh mesin di kedalaman + luck             |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Uncommon  | Tridentite Shard   | MK1–MK4    | Y ≤ 24 | 6%        | Untuk weapon — drop kecil                   |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Rare      | Pressure Gem       | MK1–MK4    | Y < 0  | 2.5%      | Hanya di Y negatif, sangat jarang           |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Rare      | Tidestone Fragment | MK2–MK4    | Y ≤ 44 | 2%        | Butuh MK2+ untuk bisa drop                  |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Epic      | Abyssal Core       | MK3–MK4    | Y ≤ 24 | 0.5%      | Butuh MK3+ dan kedalaman — sangat langka    |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+| Legendary | Void Crystal       | MK4 saja   | Y ≤ 44 | 0.1%      | Hanya dari MK4 — endgame material           |
++-----------+--------------------+------------+--------+-----------+---------------------------------------------+
+
+## Rarity Summary
+
++---------------------+------------------------------------------------+
+| Common              | Coral Dust, Pearlstone                         |
++---------------------+------------------------------------------------+
+| Uncommon            | Abyssite, Tridentite Shard                     |
++---------------------+------------------------------------------------+
+| Rare                | Pressure Gem, Tidestone Fragment               |
++---------------------+------------------------------------------------+
+| Epic                | Abyssal Core                                   |
++---------------------+------------------------------------------------+
+| Legendary           | Void Crystal                                   |
++---------------------+------------------------------------------------+
+
++----------+----------------------------+
+| Uncommon | Abyssite, Tridentite Shard |
++----------+----------------------------+
+
++------+----------------------------------+
+| Rare | Pressure Gem, Tidestone Fragment |
++------+----------------------------------+
+
++------+--------------+
+| Epic | Abyssal Core |
++------+--------------+
+
++-----------+--------------+
+| Legendary | Void Crystal |
++-----------+--------------+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Void Crystal hanya bisa drop dari MK4 — mesin tier tertinggi OceanMiner. Abyssal Core butuh MK3 atau MK4 di kedalaman Y ≤ 24. Ini yang membuat item T4 benar-benar sangat langka. |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
++------------------------------------+
+| 2.  Material Antara (Intermediate) |
++------------------------------------+
+
+Sebelum bisa membuat armor atau weapon, pemain harus membuat material antara terlebih dahulu. Material antara di-craft di CoralForge Workbench dan membutuhkan kombinasi material OceanMiner.
+
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Nama               | Resep (di CoralForge Workbench)                                 | Digunakan Untuk                |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Abyssal Ingot      | Abyssite (6x) + Iron Ingot SF (2x)                              | Bahan armor Tier 2             |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Tidal Alloy        | Tridentite Shard (4x) + Abyssal Ingot (2x)                      | Bahan weapon Tier 2            |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Pressure Plate Mat | Pressure Gem (3x) + Abyssal Ingot (4x)                          | Bahan armor Tier 3             |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Tidestone Slab     | Tidestone Fragment (8x) + Pressure Gem (1x)                     | Bahan armor Tier 3 + weapon T3 |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Void Alloy         | Void Crystal (2x) + Pressure Plate Mat (2x) + Abyssal Core (1x) | Bahan item Legendary           |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+| Core Shard         | Abyssal Core (2x) + Tidestone Slab (1x)                         | Weapon endgame                 |
++--------------------+-----------------------------------------------------------------+--------------------------------+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Void Alloy dibuat di CoralForge Infuser (mesin terpisah tier tinggi) — bukan di Workbench biasa. Ini satu lapisan kesulitan tambahan untuk item Legendary. |
++------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
++------------------------+
+| 3.  Armor — Semua Tier |
++------------------------+
+
+Empat tier armor dengan tingkat kesulitan yang naik tajam. T1 bisa dibuat dari material Common. T4 membutuhkan Void Crystal (drop rate 0.1% hanya dari MK4) dan Abyssal Core.
+
+## Tier 1 — Coral Series
+
+Butuh: Coral Dust + Pearlstone (Common). Bisa dibuat setelah OceanMiner MK1 berjalan.
+
++------------+------------------------------------+--------------+--------------------------+
+| Piece      | Material dari OceanMiner           | Intermediate | Efek Khusus              |
++------------+------------------------------------+--------------+--------------------------+
+| Helmet     | Coral Dust (12x), Pearlstone (6x)  | -            | Night Vision saat di air |
++------------+------------------------------------+--------------+--------------------------+
+| Chestplate | Coral Dust (20x), Pearlstone (10x) | -            | Water Breathing I        |
++------------+------------------------------------+--------------+--------------------------+
+| Leggings   | Coral Dust (18x), Pearlstone (8x)  | -            | Speed I di air           |
++------------+------------------------------------+--------------+--------------------------+
+| Boots      | Coral Dust (10x), Pearlstone (4x)  | -            | Depth Strider III        |
++------------+------------------------------------+--------------+--------------------------+
+
+## Tier 2 — Abyssal Series
+
+Butuh: Abyssite + Tridentite Shard (Uncommon, Y ≤ 24). OceanMiner harus dipasang di kedalaman.
+
++------------+--------------------------------------------------------+--------------------+-----------------------------------+
+| Piece      | Material dari OceanMiner                               | Intermediate       | Efek Khusus                       |
++------------+--------------------------------------------------------+--------------------+-----------------------------------+
+| Helmet     | Abyssite (8x), Coral Dust (12x), Pearlstone (6x)       | Abyssal Ingot (3x) | Night Vision + Conduit Power      |
++------------+--------------------------------------------------------+--------------------+-----------------------------------+
+| Chestplate | Abyssite (12x), Pearlstone (8x), Tridentite Shard (2x) | Abyssal Ingot (5x) | Water Breathing + Resistance I    |
++------------+--------------------------------------------------------+--------------------+-----------------------------------+
+| Leggings   | Abyssite (10x), Tridentite Shard (4x), Coral Dust (8x) | Abyssal Ingot (4x) | Speed II + Slow Fall              |
++------------+--------------------------------------------------------+--------------------+-----------------------------------+
+| Boots      | Abyssite (6x), Tridentite Shard (2x), Pearlstone (4x)  | Abyssal Ingot (2x) | Depth Strider III + Dolphin Grace |
++------------+--------------------------------------------------------+--------------------+-----------------------------------+
+
+## Tier 3 — Pressure Series
+
+Butuh: Pressure Gem (Rare, Y < 0) + Tidestone Fragment (Rare, MK2+). Harus pasang mesin di Y negatif.
+
++------------+-------------------------------------------------------------------+-----------------------------------------------+-------------------------------------------+
+| Piece      | Material dari OceanMiner                                          | Intermediate                                  | Efek Khusus                               |
++------------+-------------------------------------------------------------------+-----------------------------------------------+-------------------------------------------+
+| Helmet     | Pressure Gem (5x), Abyssite (10x), Tidestone Fragment (6x)        | Pressure Plate Mat (3x) + Tidestone Slab (1x) | Full underwater vision, Conduit Power III |
++------------+-------------------------------------------------------------------+-----------------------------------------------+-------------------------------------------+
+| Chestplate | Pressure Gem (8x), Abyssite (12x), Tridentite Shard (6x)          | Pressure Plate Mat (5x) + Tidestone Slab (2x) | Water Breathing + Resistance II + Speed I |
++------------+-------------------------------------------------------------------+-----------------------------------------------+-------------------------------------------+
+| Leggings   | Pressure Gem (6x), Tridentite Shard (8x), Tidestone Fragment (8x) | Pressure Plate Mat (4x) + Tidal Alloy (3x)    | Speed III di air, no penalti darat        |
++------------+-------------------------------------------------------------------+-----------------------------------------------+-------------------------------------------+
+| Boots      | Pressure Gem (4x), Tridentite Shard (4x), Abyssite (6x)           | Pressure Plate Mat (2x) + Tidestone Slab (1x) | Depth Strider III + Feather Falling IV    |
++------------+-------------------------------------------------------------------+-----------------------------------------------+-------------------------------------------+
+
+## Tier 4 — Void Series (Legendary)
+
+Butuh: Void Crystal (Legendary, 0.1% rate, MK4 only) + Abyssal Core (Epic, MK3+). Endgame sejati.
+
++------------+--------------------------------------------------------------------------------+------------------------------------+------------------------------------------------+
+| Piece      | Material dari OceanMiner                                                       | Intermediate                       | Efek Khusus                                    |
++------------+--------------------------------------------------------------------------------+------------------------------------+------------------------------------------------+
+| Helmet     | Void Crystal (2x), Abyssal Core (3x), Pressure Gem (8x)                        | Void Alloy (2x)                    | All water effects MAX + Haste II               |
++------------+--------------------------------------------------------------------------------+------------------------------------+------------------------------------------------+
+| Chestplate | Void Crystal (3x), Abyssal Core (4x), Pressure Gem (10x), Tidestone Frag (10x) | Void Alloy (3x)                    | Resistance III + Water Breathing + Speed II    |
++------------+--------------------------------------------------------------------------------+------------------------------------+------------------------------------------------+
+| Leggings   | Void Crystal (2x), Abyssal Core (3x), Pressure Gem (8x), Tridentite (8x)       | Void Alloy (2x) + Tidal Alloy (3x) | Speed IV di air, Swift Sneak III               |
++------------+--------------------------------------------------------------------------------+------------------------------------+------------------------------------------------+
+| Boots      | Void Crystal (2x), Abyssal Core (2x), Pressure Gem (6x)                        | Void Alloy (2x)                    | Depth Strider III + Dolphin Grace + Feather IV |
++------------+--------------------------------------------------------------------------------+------------------------------------+------------------------------------------------+
+
++----------------------------------+
+| 4.  Weapons & Tools — Semua Tier |
++----------------------------------+
+
+Weapon dan tools mengikuti logika tier yang sama dengan armor. T4 weapon membutuhkan Void Crystal dan Abyssal Core sekaligus, membuatnya menjadi item paling sulit di seluruh server.
+
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| Tier | Nama              | Tipe        | Material OceanMiner                                                                   | Intermediate                           | Damage | Efek                                              |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T1   | Coral Dagger      | Sword       | Coral Dust (20x) + Pearlstone (10x)                                                   | -                                      | +7     | Cocok di dalam air (no slow)                      |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T1   | Kelp Blade        | Sword       | Coral Dust (30x) + Pearlstone (15x)                                                   | -                                      | +8     | Life Steal kecil di air                           |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T1   | Tide Pickaxe      | Pickaxe     | Coral Dust (24x) + Pearlstone (12x)                                                   | -                                      | -      | Efficiency III + aqua affinity                    |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T2   | Abyssal Blade     | Sword       | Abyssite (10x) + Tridentite Shard (6x) + Coral Dust (10x)                             | Tidal Alloy (3x)                       | +13    | Smite III + Speed attack +15% di air              |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T2   | Trident: Tide Rip | Trident     | Abyssite (8x) + Tridentite Shard (10x)                                                | Tidal Alloy (4x)                       | +11    | Riptide V + Loyalty III (upgrade trident vanilla) |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T2   | Abyssal Drill     | Pickaxe     | Abyssite (12x) + Tridentite Shard (4x) + Coral Dust (8x)                              | Abyssal Ingot (4x)                     | -      | Efficiency V + Fortune II + no slow di air        |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T3   | Pressure Spear    | Trident     | Pressure Gem (6x) + Tidestone Fragment (8x) + Tridentite Shard (8x)                   | Tidestone Slab (2x) + Tidal Alloy (3x) | +18    | Riptide V + Impaling V + Channeling               |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T3   | Deep Cutter       | Sword       | Pressure Gem (5x) + Abyssite (10x) + Tridentite Shard (10x) + Tidestone Fragment (6x) | Tidal Alloy (4x) + Tidestone Slab (2x) | +20    | Sharpness V bawaan + Life Steal di air            |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T3   | Abyss Excavator   | Shovel/Pick | Pressure Gem (4x) + Tidestone Fragment (10x) + Abyssite (8x)                          | Pressure Plate Mat (2x)                | -      | Efficiency VII + Silk Touch + Fortune III         |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T4   | Void Reaver       | Sword       | Void Crystal (3x) + Abyssal Core (4x) + Pressure Gem (10x) + Tidestone Fragment (12x) | Void Alloy (3x) + Core Shard (2x)      | +28    | Sharpness V + Smite V + Bane V + Life Steal       |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+| T4   | Void Trident      | Trident     | Void Crystal (4x) + Abyssal Core (3x) + Pressure Gem (8x)                             | Void Alloy (2x) + Core Shard (2x)      | +25    | ALL trident enchants MAX + Impaling VII custom    |
++------+-------------------+-------------+---------------------------------------------------------------------------------------+----------------------------------------+--------+---------------------------------------------------+
+
++-------------------+
+| 5.  Item Utilitas |
++-------------------+
+
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| Tier | Nama                | Material dari OceanMiner                                         | Efek / Fungsi                                             |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| T1   | Pearl Lantern       | Pearlstone (6x) + Coral Dust (4x) + Glass (4x vanilla)           | Light 15, tidak padam di air                              |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| T1   | Depth Gauge         | Coral Dust (8x) + Pearlstone (4x) + Clock vanilla (1x)           | Tampilkan Y zone + biome saat ini                         |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| T1   | Abyssal Torch Stack | Coral Dust (4x) + Abyssite (2x) + Coal (4x vanilla)              | Torch bisa dipasang dalam air                             |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| T2   | Pressure Compass    | Pressure Gem (2x) + Tridentite Shard (2x) + Compass vanilla (1x) | Tunjukkan zona Y + nearest Ocean Monument                 |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| T2   | Tide Beacon         | Abyssite (8x) + Tidestone Fragment (4x) + Beacon vanilla (1x)    | Beacon bawah air: range +50%, efek Haste/Speed            |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+| T3   | Void Lens           | Pressure Gem (4x) + Tidestone Fragment (6x) + Abyssal Core (1x)  | Lihat material sekitar dalam radius 5 blok (sonar visual) |
++------+---------------------+------------------------------------------------------------------+-----------------------------------------------------------+
+
++--------------------------------+
+| 6.  Dependency & Prerequisites |
++--------------------------------+
+
+Setiap item CoralForge memiliki rantai dependency yang jelas. Pemain tidak bisa skip tahap apapun.
+
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Item Target        | Harus Punya Dulu                                | Bottleneck Utama                                        |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Coral Set (T1)     | OceanMiner MK1 berjalan                         | Butuh grind Coral Dust & Pearlstone dalam jumlah banyak |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Abyssal Set (T2)   | T1 selesai + OceanMiner dipasang Y ≤ 24         | Abyssite hanya 8% drop rate di kedalaman                |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Trident: Tide Rip  | Tridentite Shard dari Mid Zone                  | 6% drop rate, butuh banyak shard                        |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Pressure Set (T3)  | OceanMiner MK2+ dipasang Y < 0                  | Pressure Gem hanya 2.5% rate, Y negatif                 |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Tidestone items    | OceanMiner MK2+ (Tidestone Fragment mulai drop) | 2% rate, butuh MK2 machine                              |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Abyssal Core items | OceanMiner MK3+ di Y ≤ 24                       | 0.5% — butuh mesin MK3 yang mahal                       |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+| Void Set (T4)      | OceanMiner MK4 + semua tier sebelumnya          | Void Crystal 0.1%, hanya MK4 — endgame sejati           |
++--------------------+-------------------------------------------------+---------------------------------------------------------+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Void Crystal dengan drop rate 0.1% dari MK4 berarti rata-rata pemain butuh 1000 tick mesin untuk mendapat 1 Void Crystal. Dengan 4 piece Void armor yang masing-masing butuh 2–3 Void Crystal, ini adalah grind yang sangat panjang — by design. |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
++----------------------------------+
+| 7.  Project Setup & Dependencies |
++----------------------------------+
+
+## pom.xml — Dependencies Wajib
+
++------------------+---------------------------------------------------------------------------------------+
+| Slimefun4        | groupId: com.github.SlimefunGuguProject │ version: 2024.3.1 │ scope: provided         |
++------------------+---------------------------------------------------------------------------------------+
+| GuizhanLibPlugin | groupId: net.guizhanss │ version: 1.8.1 │ scope: provided                             |
++------------------+---------------------------------------------------------------------------------------+
+| OceanMinerGrow   | dependency di pom.xml, scope: provided — item ID diambil dari sini                    |
++------------------+---------------------------------------------------------------------------------------+
+| Repository       | jitpack.io untuk Slimefun + GuizhanLib │ repo OceanMinerGrow (Syaaddd/OceanMinerGrow) |
++------------------+---------------------------------------------------------------------------------------+
+| Java version     | Java 17+ (sesuai Paper 1.21)                                                          |
++------------------+---------------------------------------------------------------------------------------+
+| Build tool       | Maven 3.8+ atau Gradle 8+                                                             |
++------------------+---------------------------------------------------------------------------------------+
+
+## plugin.yml — Structure
+
++-------------+----------------------------------------------------+
+| name        | CoralForge                                         |
++-------------+----------------------------------------------------+
+| main        | com.yourname.coralforge.CoralForge                 |
++-------------+----------------------------------------------------+
+| version     | 1.0.0                                              |
++-------------+----------------------------------------------------+
+| depend      | ['Slimefun', 'GuizhanLibPlugin', 'OceanMinerGrow'] |
++-------------+----------------------------------------------------+
+| api-version | 1.21                                               |
++-------------+----------------------------------------------------+
+
+## Struktur Package
+
++-----------------------------------+---------------------------------------------------+
+| Package                           | Isi                                               |
++-----------------------------------+---------------------------------------------------+
+| com.yourname.coralforge           | Main class CoralForge.java                        |
++-----------------------------------+---------------------------------------------------+
+| com.yourname.coralforge.items     | Semua SlimefunItem: armor, weapon, tool, util     |
++-----------------------------------+---------------------------------------------------+
+| com.yourname.coralforge.machines  | CoralForge Workbench, CoralForge Infuser          |
++-----------------------------------+---------------------------------------------------+
+| com.yourname.coralforge.listeners | ArmorListener, WeaponListener, CraftListener      |
++-----------------------------------+---------------------------------------------------+
+| com.yourname.coralforge.utils     | RecipeBuilder, ItemBuilder, helper classes        |
++-----------------------------------+---------------------------------------------------+
+| com.yourname.coralforge.setup     | ItemSetup.java — daftarkan semua item ke Slimefun |
++-----------------------------------+---------------------------------------------------+
+
++-----------------------------------------+
+| 8.  Implementation Plan — Fase per Fase |
++-----------------------------------------+
+
+Total estimasi pengerjaan: 8–13 minggu tergantung pengalaman developer. Setiap fase harus selesai dan tested sebelum mulai fase berikutnya.
+
+## Fase 1 — Setup Project & Material Layer
+
++------------+-------------------------------------------------------------+
+| Estimasi   | 1–2 minggu                                                  |
++------------+-------------------------------------------------------------+
+| Dependency | OceanMinerGrow addon harus ter-install, Slimefun4 2024.3.1+ |
++------------+-------------------------------------------------------------+
+| Output     | Plugin bisa load, material terdaftar, tidak ada error       |
++------------+-------------------------------------------------------------+
+
+Tasks:
+
+- Buat project Maven/Gradle dengan dependency Slimefun4 (2024.3.1) + GuizhanLibPlugin (1.8.1)
+
+- Buat class plugin utama CoralForge extends JavaPlugin implements SlimefunAddon
+
+- Daftarkan semua 8 material dari OceanMiner sebagai SlimefunItem baru (item-only, no block)
+
+- Buat ItemGroup kategori CoralForge dengan icon bertema laut
+
+- Buat konfigurasi config.yml untuk toggle tiap item group
+
+- Integrasi dengan OceanMinerGrow — daftarkan material sebagai dependency item ID
+
+- Unit test: pastikan semua material bisa didrop dan terdeteksi Slimefun
+
+## Fase 2 — CoralForge Workbench + Intermediate Materials
+
++------------+----------------------------------------------------------+
+| Estimasi   | 1–2 minggu                                               |
++------------+----------------------------------------------------------+
+| Dependency | Fase 1 selesai, semua material terdaftar                 |
++------------+----------------------------------------------------------+
+| Output     | Workbench berfungsi, 6 intermediate material bisa dibuat |
++------------+----------------------------------------------------------+
+
+Tasks:
+
+- Buat custom machine CoralForge Workbench extends SlimefunItem (crafting station)
+
+- Buat ChestMenu GUI untuk workbench dengan slot input (9) + output (1) + indicator
+
+- Implementasi semua 6 intermediate material (Abyssal Ingot, Tidal Alloy, dll)
+
+- Daftarkan resep intermediate di workbench dengan RecipeType.ENHANCED_CRAFTING_TABLE atau custom RecipeType
+
+- Buat CoralForge Infuser untuk material Legendary (Void Alloy) — mesin terpisah tier tinggi
+
+- Validasi: semua intermediate bisa di-craft, GUI berfungsi
+
+## Fase 3 — Tier 1 & Tier 2 Items (Armor + Weapon + Util)
+
++------------+--------------------------------------------------------+
+| Estimasi   | 2–3 minggu                                             |
++------------+--------------------------------------------------------+
+| Dependency | Fase 2 selesai                                         |
++------------+--------------------------------------------------------+
+| Output     | T1 dan T2 lengkap, armor efek berfungsi, weapon custom |
++------------+--------------------------------------------------------+
+
+Tasks:
+
+- Implementasi Coral Set (T1): 4 armor pieces dengan ArmorListener efek potion di air
+
+- Implementasi T1 weapons: Coral Dagger, Kelp Blade, Tide Pickaxe
+
+- Implementasi T1 utilities: Pearl Lantern, Depth Gauge, Abyssal Torch Stack
+
+- Implementasi Abyssal Set (T2): 4 armor pieces, resep butuh Abyssal Ingot
+
+- Implementasi T2 weapons: Abyssal Blade, Trident Tide Rip (upgrade system), Abyssal Drill
+
+- Buat ArmorListener: cek apakah pemain di dalam air (block.isLiquid()), terapkan PotionEffect
+
+- Buat WeaponListener: cek damage event, terapkan efek khusus saat di air
+
+- Balancing pass pertama: test semua resep dan efek
+
+## Fase 4 — Tier 3 & Tier 4 Items (Endgame)
+
++------------+-----------------------------------------------------------------------+
+| Estimasi   | 2–3 minggu                                                            |
++------------+-----------------------------------------------------------------------+
+| Dependency | Fase 3 selesai, Abyssal Core dan Void Crystal bisa di-drop OceanMiner |
++------------+-----------------------------------------------------------------------+
+| Output     | Semua tier lengkap, endgame berfungsi                                 |
++------------+-----------------------------------------------------------------------+
+
+Tasks:
+
+- Implementasi Pressure Set (T3): 4 armor pieces, resep butuh Pressure Gem (Y<0)
+
+- Implementasi T3 weapons: Pressure Spear, Deep Cutter, Abyss Excavator
+
+- Implementasi T3 utility: Pressure Compass, Tide Beacon
+
+- Implementasi Void Set (T4 Legendary): 4 armor pieces butuh Void Crystal + Abyssal Core
+
+- Implementasi T4 weapons: Void Reaver, Void Trident
+
+- Implementasi T3 utility: Void Lens (sonar mechanic — scan blok sekitar)
+
+- Implementasi CoralForge Infuser untuk resep Void Alloy
+
+- Balancing final: pastikan T4 benar-benar sangat sulit didapat
+
+## Fase 5 — Polish, Config & Release
+
++------------+-------------------------------------------------+
+| Estimasi   | 1 minggu                                        |
++------------+-------------------------------------------------+
+| Dependency | Fase 4 selesai                                  |
++------------+-------------------------------------------------+
+| Output     | Plugin siap produksi, bisa di-install di server |
++------------+-------------------------------------------------+
+
+Tasks:
+
+- Tambahkan item descriptions / lore text pada setiap item (gunakan GuizhanLib untuk formatting)
+
+- Buat lang/id_ID.yml untuk terjemahan Indonesia
+
+- Expose semua drop rate dan resep ke config.yml agar admin bisa custom
+
+- Tambahkan Slimefun Guide entry untuk semua item (wajib untuk in-game guide)
+
+- Buat plugin.yml dengan depend: [Slimefun, GuizhanLibPlugin, OceanMinerGrow]
+
+- Test di server Paper 1.21 dengan Slimefun 2024.3.1
+
+- Buat README dan upload ke GitHub
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Urutan fase TIDAK boleh dibalik. Fase 1 (material layer) adalah fondasi semua mekanik. Jika OceanMinerGrow belum stabil di server, tunda implementasi CoralForge sampai material dapat di-drop dengan benar. |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+CoralForge Addon Plan — Survival Slimefun Underwater Edition  |  Semua resep didesain untuk sangat sulit

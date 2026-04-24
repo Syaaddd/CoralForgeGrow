@@ -1,0 +1,9 @@
+name: CoralForgeGrow
+version: '1.0.0-SNAPSHOT'
+main: com.github.Syaaddd.coralForgeGrow.CoralForgeGrow
+api-version: '1.21'
+depend:
+  - Slimefun
+  - OceanMinerGrow
+description: Hardcore underwater armor & weapon system for Slimefun
+author: Syaaddd
