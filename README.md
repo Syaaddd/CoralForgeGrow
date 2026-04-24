@@ -1,4 +1,4 @@
-﻿# CoralForgeGrow
+# CoralForgeGrow
 
 A [Slimefun4](https://github.com/SlimefunGuguProject/Slimefun4) addon that adds a hardcore underwater gear progression system across 4 tiers — from basic Coral equipment up to legendary Void-tier armor, weapons, and utility items.
 
