@@ -83,10 +83,34 @@ public class CoralForgeWorkbench extends SlimefunItem {
                 BlockMenu menu = BlockStorage.getInventory(b.getLocation());
                 if (menu != null) {
                     refreshCraftButton(menu, e.getPlayer());
+                    updateOutputPreview(menu);
                     menu.open(e.getPlayer());
                 }
             });
         });
+    }
+
+    private static void updateOutputPreview(BlockMenu menu) {
+        for (int i = 0; i < BG_SLOTS.length; i++) {
+            if (i < RECIPES.size()) {
+                ItemStack preview = RECIPES.get(i).getOutput().clone();
+                ItemMeta m = preview.getItemMeta();
+                if (m != null) {
+                    List<String> lore = m.hasLore() ? new ArrayList<>(m.getLore()) : new ArrayList<>();
+                    lore.add("");
+                    lore.add(ChatColor.YELLOW + "» Dapat dibuat di sini «");
+                    m.setLore(lore);
+                    preview.setItemMeta(m);
+                }
+                menu.replaceExistingItem(BG_SLOTS[i], preview);
+            } else {
+                ItemStack bg = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+                ItemMeta bm = bg.getItemMeta();
+                bm.setDisplayName(" ");
+                bg.setItemMeta(bm);
+                menu.replaceExistingItem(BG_SLOTS[i], bg);
+            }
+        }
     }
 
     private void refreshCraftButton(BlockMenu menu, Player player) {
