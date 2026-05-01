@@ -1,0 +1,219 @@
+c================================================================
+  CoralForge Addon — Tambahan Set Armor
+  ABYSS SOVEREIGN SET (Tier 5)
+  Update untuk CoralForge_Plan.txt
+================================================================
+
+POSISI DALAM TIER
+-----------------
+T1  Coral Series       (Common material)
+T2  Abyssal Series     (Uncommon material)
+T3  Pressure Series    (Rare material)
+T4  Void Series        (Epic + Legendary material)
+T5  Abyss Sovereign    (OceanMiner ALL + Slimefun tier tinggi)  <-- BARU
+
+
+FILOSOFI DESAIN
+---------------
+- Sedikit di atas Void Set — bukan lompatan besar, tapi jelas lebih kuat
+- Setiap piece punya 1 efek unik yang HANYA aktif saat di dalam air
+- Full set bonus: semua 4 efek aktif sekaligus
+- Material mahal karena butuh OceanMiner semua tier + Slimefun standar tier tinggi
+- Tidak bisa di-craft sebelum Void Set selesai (butuh Void Alloy sebagai bahan)
+
+
+================================================================
+  INTERMEDIATE MATERIAL BARU
+================================================================
+
++---------------------+--------------------------------------------------------------+------------------------------+
+| Nama                | Resep                                                        | Digunakan Untuk              |
++---------------------+--------------------------------------------------------------+------------------------------+
+| Sovereign Ingot     | Void Alloy (2x) + Billon Ingot SF (4x) +                    | Semua piece Abyss Sovereign  |
+|                     | Abyssal Core (2x) + Reinforced Alloy Ingot SF (2x)          |                              |
++---------------------+--------------------------------------------------------------+------------------------------+
+| Abyssal Crown Gem   | Void Crystal (3x) + Pressure Gem (4x) +                     | Helmet piece saja            |
+|                     | Tidestone Fragment (6x)                                      |                              |
++---------------------+--------------------------------------------------------------+------------------------------+
+| Sovereign Core      | Sovereign Ingot (2x) + Void Crystal (2x) +                  | Chestplate & Leggings        |
+|                     | Abyssal Core (3x) + Damascus Steel SF (4x)                   |                              |
++---------------------+--------------------------------------------------------------+------------------------------+
+
+Catatan: Billon Ingot, Reinforced Alloy Ingot, dan Damascus Steel
+adalah material Slimefun standar yang butuh progression Slimefun
+penuh sebelum bisa dibuat — menambah lapisan kesulitan non-OceanMiner.
+
+
+================================================================
+  ARMOR PIECES — ABYSS SOVEREIGN SET (T5)
+================================================================
+
++-----------+-------------------------------------+------------------------------+------------------------+
+| Piece     | Armor Value                         | Efek dari Void Set (diwarisi)| Efek Unik T5           |
++-----------+-------------------------------------+------------------------------+------------------------+
+| Helmet    | +6 (sama Void +4, naik 2)           | Night Vision,                | REGENERASI HP PASIF    |
+|           |                                     | Conduit Power III,           | Regen II saat di air   |
+|           |                                     | Haste II                     | (1 HP per 2 detik)     |
++-----------+-------------------------------------+------------------------------+------------------------+
+| Chestplate| +10 (sama Void +8, naik 2)          | Water Breathing,             | THORNS BALIK DAMAGE    |
+|           |                                     | Resistance III,              | 25% damage dikembalikan|
+|           |                                     | Speed II                     | ke attacker saat di air|
++-----------+-------------------------------------+------------------------------+------------------------+
+| Leggings  | +9 (sama Void +7, naik 2)           | Speed IV di air,             | XP BONUS               |
+|           |                                     | Swift Sneak III              | +50% XP dari mob kill  |
+|           |                                     |                              | saat di dalam air      |
++-----------+-------------------------------------+------------------------------+------------------------+
+| Boots     | +5 (sama Void +4, naik 1)           | Depth Strider III,           | REDUCE DURABILITY LOSS |
+|           |                                     | Dolphin Grace,               | Durability loss -75%   |
+|           |                                     | Feather Falling IV           | saat dipakai di air    |
++-----------+-------------------------------------+------------------------------+------------------------+
+
+FULL SET BONUS (semua 4 piece dipakai):
+  Semua 4 efek unik aktif sekaligus +
+  Conduit Power otomatis tanpa perlu Conduit built +
+  Resistance naik jadi Resistance IV (bonus set eksklusif)
+
+
+================================================================
+  RESEP CRAFTING PER PIECE
+================================================================
+
+Crafting Station: CoralForge Infuser (bukan Workbench biasa)
+Alasan: Material terlalu berharga untuk resep workbench standar
+
++------------+-------------------------------------------------------+------------------------------------------+
+| Piece      | Material OceanMiner                                   | Material Slimefun Standar                |
++------------+-------------------------------------------------------+------------------------------------------+
+| Helmet     | Void Crystal (4x)                                     | Sovereign Ingot (3x)                     |
+|            | Abyssal Core (4x)                                     | Abyssal Crown Gem (1x)                   |
+|            | Pressure Gem (6x)                                     | Reinforced Alloy Ingot SF (4x)           |
+|            | Tidestone Fragment (8x)                               |                                          |
++------------+-------------------------------------------------------+------------------------------------------+
+| Chestplate | Void Crystal (6x)                                     | Sovereign Core (2x)                      |
+|            | Abyssal Core (6x)                                     | Sovereign Ingot (4x)                     |
+|            | Pressure Gem (8x)                                     | Billon Ingot SF (6x)                     |
+|            | Tridentite Shard (10x)                                |                                          |
++------------+-------------------------------------------------------+------------------------------------------+
+| Leggings   | Void Crystal (5x)                                     | Sovereign Core (2x)                      |
+|            | Abyssal Core (5x)                                     | Sovereign Ingot (3x)                     |
+|            | Pressure Gem (6x)                                     | Damascus Steel SF (6x)                   |
+|            | Tridentite Shard (8x)                                 |                                          |
++------------+-------------------------------------------------------+------------------------------------------+
+| Boots      | Void Crystal (3x)                                     | Sovereign Ingot (3x)                     |
+|            | Abyssal Core (3x)                                     | Reinforced Alloy Ingot SF (4x)           |
+|            | Pressure Gem (4x)                                     | Hardened Metal SF (4x)                   |
+|            | Tidestone Fragment (6x)                               |                                          |
++------------+-------------------------------------------------------+------------------------------------------+
+
+Total material untuk FULL SET:
+  OceanMiner:
+    Void Crystal      : 18x  (rata-rata butuh 18.000 tick MK4 @ 0.1% rate)
+    Abyssal Core      : 18x  (rata-rata butuh 3.600 tick MK3+ @ 0.5% rate)
+    Pressure Gem      : 24x  (rata-rata butuh 960 tick Y<0 @ 2.5% rate)
+    Tidestone Fragment: 14x  (rata-rata butuh 700 tick MK2+ @ 2% rate)
+    Tridentite Shard  : 18x  (rata-rata butuh 300 tick Y<=24 @ 6% rate)
+
+  Slimefun Standar:
+    Sovereign Ingot   : 13x  (butuh Void Alloy + Billon Ingot + Abyssal Core + Reinforced Alloy)
+    Sovereign Core    : 4x   (butuh Sovereign Ingot + Void Crystal + Abyssal Core + Damascus Steel)
+    Abyssal Crown Gem : 1x   (butuh Void Crystal + Pressure Gem + Tidestone Fragment)
+    Billon Ingot SF   : 6x   (dari Slimefun progression standar)
+    Reinforced Alloy  : 8x   (dari Slimefun progression standar)
+    Damascus Steel SF : 6x   (dari Slimefun progression standar)
+    Hardened Metal SF : 4x   (dari Slimefun progression standar)
+
+
+================================================================
+  IMPLEMENTASI TEKNIS
+================================================================
+
+Dependency Baru:
+  - Void Alloy harus terdaftar sebelum Sovereign Ingot bisa di-craft
+  - Semua material Slimefun standar (Billon, Reinforced Alloy, dll)
+    harus diambil item ID-nya dari Slimefun4 ItemStack registry
+  - Jangan hardcode item name — gunakan SlimefunItems.BILLON_INGOT
+    dan sejenisnya agar tidak error jika Slimefun update
+
+Listener Tambahan untuk Efek Unik:
+
+  1. Regen II (Helmet)
+     - ArmorListener: cek 4 piece dipakai, cek block.isLiquid()
+     - Terapkan PotionEffect REGENERATION level 1 (Regen II)
+       durasi refresh tiap 2 detik via scheduler
+
+  2. Thorns saat di air (Chestplate)
+     - EntityDamageByEntityListener
+     - Cek attacker, cek korban pakai Sovereign Chestplate
+     - Cek korban sedang di dalam air
+     - dealDamage(attacker, event.getDamage() * 0.25)
+
+  3. XP Bonus (Leggings)
+     - EntityDeathListener + ExperienceDropListener
+     - Cek killer pakai Sovereign Leggings + berada di air
+     - event.setDroppedExp((int)(event.getDroppedExp() * 1.5))
+
+  4. Reduce Durability (Boots)
+     - PlayerItemDamageListener
+     - Cek item adalah Sovereign Boots + player di air
+     - event.setDamage(0) dengan probabilitas 75%
+       (random.nextDouble() < 0.75 -> cancel damage)
+
+  5. Full Set Bonus — Conduit Power + Resistance IV
+     - Cek semua 4 slot armor pakai Sovereign piece
+     - Terapkan PotionEffect CONDUIT_POWER level 0 (permanen refresh)
+     - Terapkan PotionEffect RESISTANCE level 3 (Resistance IV)
+       override efek Resistance III dari Chestplate
+
+
+================================================================
+  KENAPA TIDAK OVERPOWERED
+================================================================
+
++----------------------------+------------------+---------------------+
+| Aspek                      | Void Set (T4)    | Abyss Sovereign (T5)|
++----------------------------+------------------+---------------------+
+| Total armor value          | 23               | 30                  |
++----------------------------+------------------+---------------------+
+| Resistance level           | III              | IV (full set only)  |
++----------------------------+------------------+---------------------+
+| Efek unik                  | 0                | 4 (saat di air)     |
++----------------------------+------------------+---------------------+
+| Efek aktif di darat        | Semua            | Efek unik MATI      |
++----------------------------+------------------+---------------------+
+| Thorns damage balik        | -                | 25% (bukan 100%)    |
++----------------------------+------------------+---------------------+
+| Regen                      | -                | Regen II saja       |
++----------------------------+------------------+---------------------+
+| XP bonus                   | -                | +50% (bukan 2x)     |
++----------------------------+------------------+---------------------+
+
+Pembatas utama: SEMUA efek unik hanya aktif saat pemain
+berada di dalam air. Di darat, Abyss Sovereign hanya
+sedikit lebih kuat dari Void Set dari sisi stats saja.
+Ini yang mencegahnya jadi terlalu broken.
+
+
+================================================================
+  CATATAN IMPLEMENTASI UNTUK PLAN FILE
+================================================================
+
+Masukkan ke Fase 4 (setelah Void Set selesai) atau
+jadikan Fase 4.5 tersendiri:
+
+  Tasks tambahan:
+  - Daftarkan 3 intermediate material baru (Sovereign Ingot,
+    Abyssal Crown Gem, Sovereign Core) ke CoralForge Infuser
+  - Implementasi 4 piece Abyss Sovereign dengan ArmorListener
+  - Implementasi 4 listener efek unik (Regen, Thorns, XP, Durability)
+  - Implementasi full set bonus detector
+  - Pastikan item ID Slimefun standar (Billon Ingot, dll)
+    diambil dari SlimefunItems registry, bukan hardcoded
+  - Balancing test: pastikan efek unik tidak stack aneh
+    dengan enchant vanilla atau efek armor tier lain
+
+  Estimasi tambahan: 1-2 minggu
+
+================================================================
+  Abyss Sovereign Set — CoralForge T5
+  Survival Slimefun Underwater Edition
+================================================================

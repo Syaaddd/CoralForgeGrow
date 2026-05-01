@@ -1,5 +1,6 @@
 package com.github.Syaaddd.coralForgeGrow.setup;
 
+import com.github.Syaaddd.coralForgeGrow.items.armor.AbyssSovereignArmor;
 import com.github.Syaaddd.coralForgeGrow.items.armor.CoralForgeArmor;
 import com.github.Syaaddd.coralForgeGrow.items.utilities.CoralForgeUtility;
 import com.github.Syaaddd.coralForgeGrow.items.weapons.CoralForgeSword;
@@ -54,6 +55,9 @@ public final class ItemSetup {
         // ── Workbench recipes (registered AFTER all items are registered) ─────
         registerWorkbenchRecipes();
         registerInfuserRecipes();
+
+        // ── Research (unlock system, registered last) ─────────────────────────
+        ResearchSetup.setup(addon);
     }
 
     // =========================================================================
@@ -176,6 +180,47 @@ public final class ItemSetup {
         new SlimefunItem(MAIN, coreShard, WORKBENCH_TYPE,
             recipeOf(ABYSSAL_CORE, ABYSSAL_CORE, "CFG_TIDESTONE_SLAB",
                      null, null, null, null, null, null)
+        ).register(addon);
+
+        // ── T5 Sovereign Intermediate Materials (Infuser only) ────────────────
+
+        // Sovereign Ingot: Void Alloy(10) + Billon Ingot(15) + Abyssal Core(10) + Reinforced Alloy(10)
+        SlimefunItemStack sovereignIngot = new SlimefunItemStack(
+            "CFG_SOVEREIGN_INGOT", Material.NETHERITE_INGOT,
+            ChatColor.GOLD + "" + ChatColor.BOLD + "Sovereign Ingot",
+            ChatColor.GRAY + "Legendary alloy for T5 Abyss Sovereign Set",
+            ChatColor.GOLD + "Craft in CoralForge Infuser"
+        );
+        new SlimefunItem(MAIN, sovereignIngot, INFUSER_TYPE,
+            recipeOf("CFG_VOID_ALLOY", "CFG_VOID_ALLOY", "BILLON_INGOT",
+                     "BILLON_INGOT", ABYSSAL_CORE, ABYSSAL_CORE,
+                     "REINFORCED_ALLOY_INGOT", "REINFORCED_ALLOY_INGOT", null)
+        ).register(addon);
+
+        // Abyssal Crown Gem: Void Crystal(10) + Pressure Gem(15) + Tidestone Fragment(20)
+        SlimefunItemStack abyssalCrownGem = new SlimefunItemStack(
+            "CFG_ABYSSAL_CROWN_GEM", Material.ECHO_SHARD,
+            ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Abyssal Crown Gem",
+            ChatColor.GRAY + "Focused gem for Sovereign Helmet",
+            ChatColor.DARK_AQUA + "Craft in CoralForge Infuser"
+        );
+        new SlimefunItem(MAIN, abyssalCrownGem, INFUSER_TYPE,
+            recipeOf(VOID_CRYSTAL, VOID_CRYSTAL, VOID_CRYSTAL,
+                     PRESSURE_GEM, PRESSURE_GEM, TIDESTONE_FRAGMENT,
+                     TIDESTONE_FRAGMENT, TIDESTONE_FRAGMENT, null)
+        ).register(addon);
+
+        // Sovereign Core: Sovereign Ingot(10) + Void Crystal(10) + Abyssal Core(15) + Damascus Steel(20)
+        SlimefunItemStack sovereignCore = new SlimefunItemStack(
+            "CFG_SOVEREIGN_CORE", Material.NETHER_STAR,
+            ChatColor.GOLD + "" + ChatColor.BOLD + "Sovereign Core",
+            ChatColor.GRAY + "Core crystal for Sovereign Chestplate & Leggings",
+            ChatColor.GOLD + "Craft in CoralForge Infuser"
+        );
+        new SlimefunItem(MAIN, sovereignCore, INFUSER_TYPE,
+            recipeOf("CFG_SOVEREIGN_INGOT", "CFG_SOVEREIGN_INGOT", VOID_CRYSTAL,
+                     VOID_CRYSTAL, ABYSSAL_CORE, ABYSSAL_CORE,
+                     ABYSSAL_CORE, "DAMASCUS_STEEL", "DAMASCUS_STEEL")
         ).register(addon);
     }
 
@@ -316,6 +361,77 @@ public final class ItemSetup {
         new CoralForgeArmor(MAIN, voidBoots,
             WORKBENCH_TYPE, recipeOf("CFG_VOID_ALLOY", VOID_CRYSTAL, "CFG_VOID_ALLOY", ABYSSAL_CORE, null, ABYSSAL_CORE, PRESSURE_GEM, null, PRESSURE_GEM),
             List.of(effect(PotionEffectType.DOLPHINS_GRACE, 0), effect(PotionEffectType.SLOW_FALLING, 0))
+        ).register(addon);
+
+        // ── T5 Abyss Sovereign (Infuser only) ────────────────────────────────
+        // Unique in-water effects handled by SovereignArmorListener.
+        // Full-set bonus (Conduit Power + Resistance IV) handled by ArmorListener.
+
+        // Helmet: always Night Vision + Conduit Power III + Haste II | water Regen II
+        new AbyssSovereignArmor(MAIN,
+            item("CFG_SOVEREIGN_HELMET", Material.NETHERITE_HELMET,
+                ChatColor.GOLD + "" + ChatColor.BOLD + "Abyss Sovereign Helmet",
+                ChatColor.GRAY + "Armor +6 | Always: Night Vision, Conduit III, Haste II",
+                ChatColor.AQUA + "In Water: " + ChatColor.GREEN + "Regen II (passive)"),
+            INFUSER_TYPE,
+            recipeOf(VOID_CRYSTAL, "CFG_SOVEREIGN_INGOT", VOID_CRYSTAL,
+                     ABYSSAL_CORE, "CFG_ABYSSAL_CROWN_GEM", ABYSSAL_CORE,
+                     PRESSURE_GEM, "CFG_SOVEREIGN_INGOT", PRESSURE_GEM),
+            List.of(effect(PotionEffectType.REGENERATION, 1)),         // water: Regen II
+            List.of(effect(PotionEffectType.NIGHT_VISION, 0),          // always
+                    effect(PotionEffectType.CONDUIT_POWER, 2),
+                    effect(PotionEffectType.HASTE, 1)),
+            AbyssSovereignArmor.SovereignPiece.HELMET
+        ).register(addon);
+
+        // Chestplate: always Resistance III | water Water Breathing + Speed II + Thorns 25%
+        new AbyssSovereignArmor(MAIN,
+            item("CFG_SOVEREIGN_CHESTPLATE", Material.NETHERITE_CHESTPLATE,
+                ChatColor.GOLD + "" + ChatColor.BOLD + "Abyss Sovereign Chestplate",
+                ChatColor.GRAY + "Armor +10 | Always: Resistance III",
+                ChatColor.AQUA + "In Water: " + ChatColor.GREEN + "Water Breath, Speed II, Thorns 25%"),
+            INFUSER_TYPE,
+            recipeOf(VOID_CRYSTAL, "CFG_SOVEREIGN_CORE", VOID_CRYSTAL,
+                     ABYSSAL_CORE, "CFG_SOVEREIGN_INGOT", ABYSSAL_CORE,
+                     PRESSURE_GEM, "CFG_SOVEREIGN_CORE", PRESSURE_GEM),
+            List.of(effect(PotionEffectType.WATER_BREATHING, 0),       // water
+                    effect(PotionEffectType.SPEED, 1)),
+            List.of(effect(PotionEffectType.RESISTANCE, 2)),            // always: Resistance III
+            AbyssSovereignArmor.SovereignPiece.CHESTPLATE
+        ).register(addon);
+
+        // Leggings: water Speed IV | Swift Sneak III enchant | XP +50% unique
+        SlimefunItemStack sovereignLeggings = item("CFG_SOVEREIGN_LEGGINGS", Material.NETHERITE_LEGGINGS,
+            ChatColor.GOLD + "" + ChatColor.BOLD + "Abyss Sovereign Leggings",
+            ChatColor.GRAY + "Armor +9 | Swift Sneak III",
+            ChatColor.AQUA + "In Water: " + ChatColor.GREEN + "Speed IV, XP +50%");
+        sovereignLeggings.addUnsafeEnchantment(Enchantment.SWIFT_SNEAK, 3);
+        new AbyssSovereignArmor(MAIN, sovereignLeggings,
+            INFUSER_TYPE,
+            recipeOf(VOID_CRYSTAL, "CFG_SOVEREIGN_CORE", VOID_CRYSTAL,
+                     ABYSSAL_CORE, "CFG_SOVEREIGN_INGOT", ABYSSAL_CORE,
+                     TRIDENTITE_SHARD, "DAMASCUS_STEEL", TRIDENTITE_SHARD),
+            List.of(effect(PotionEffectType.SPEED, 3)),                 // water: Speed IV
+            List.of(),
+            AbyssSovereignArmor.SovereignPiece.LEGGINGS
+        ).register(addon);
+
+        // Boots: water Dolphin Grace + Slow Falling | Depth Strider III + Feather IV enchant | Durability -75% unique
+        SlimefunItemStack sovereignBoots = item("CFG_SOVEREIGN_BOOTS", Material.NETHERITE_BOOTS,
+            ChatColor.GOLD + "" + ChatColor.BOLD + "Abyss Sovereign Boots",
+            ChatColor.GRAY + "Armor +5 | Depth Strider III + Feather Falling IV",
+            ChatColor.AQUA + "In Water: " + ChatColor.GREEN + "Dolphin Grace, Durability -75%");
+        sovereignBoots.addUnsafeEnchantment(Enchantment.DEPTH_STRIDER, 3);
+        sovereignBoots.addUnsafeEnchantment(Enchantment.FEATHER_FALLING, 4);
+        new AbyssSovereignArmor(MAIN, sovereignBoots,
+            INFUSER_TYPE,
+            recipeOf(null, VOID_CRYSTAL, null,
+                     ABYSSAL_CORE, "CFG_SOVEREIGN_INGOT", ABYSSAL_CORE,
+                     PRESSURE_GEM, "REINFORCED_ALLOY_INGOT", PRESSURE_GEM),
+            List.of(effect(PotionEffectType.DOLPHINS_GRACE, 0),         // water
+                    effect(PotionEffectType.SLOW_FALLING, 0)),
+            List.of(),
+            AbyssSovereignArmor.SovereignPiece.BOOTS
         ).register(addon);
     }
 
@@ -566,6 +682,64 @@ public final class ItemSetup {
                 .ingredient(ABYSSAL_CORE, 1)
                 .build()
         );
+
+        // ── T5 Sovereign Intermediate Materials ──────────────────────────────
+
+        addInfuser("CFG_SOVEREIGN_INGOT", 1,
+            "CFG_VOID_ALLOY", 10,
+            "BILLON_INGOT", 15,
+            ABYSSAL_CORE, 10,
+            "REINFORCED_ALLOY_INGOT", 10);
+
+        addInfuser("CFG_ABYSSAL_CROWN_GEM", 1,
+            VOID_CRYSTAL, 10,
+            PRESSURE_GEM, 15,
+            TIDESTONE_FRAGMENT, 20);
+
+        addInfuser("CFG_SOVEREIGN_CORE", 1,
+            "CFG_SOVEREIGN_INGOT", 10,
+            VOID_CRYSTAL, 10,
+            ABYSSAL_CORE, 15,
+            "DAMASCUS_STEEL", 20);
+
+        // ── T5 Abyss Sovereign Armor ─────────────────────────────────────────
+        // Each ingredient requires 10-25 units to reflect the endgame grind.
+
+        addInfuser("CFG_SOVEREIGN_HELMET", 1,
+            VOID_CRYSTAL, 15,
+            ABYSSAL_CORE, 15,
+            PRESSURE_GEM, 20,
+            TIDESTONE_FRAGMENT, 20,
+            "CFG_SOVEREIGN_INGOT", 10,
+            "CFG_ABYSSAL_CROWN_GEM", 5,
+            "REINFORCED_ALLOY_INGOT", 15);
+
+        addInfuser("CFG_SOVEREIGN_CHESTPLATE", 1,
+            VOID_CRYSTAL, 20,
+            ABYSSAL_CORE, 20,
+            PRESSURE_GEM, 25,
+            TRIDENTITE_SHARD, 30,
+            "CFG_SOVEREIGN_CORE", 10,
+            "CFG_SOVEREIGN_INGOT", 15,
+            "BILLON_INGOT", 20);
+
+        addInfuser("CFG_SOVEREIGN_LEGGINGS", 1,
+            VOID_CRYSTAL, 18,
+            ABYSSAL_CORE, 18,
+            PRESSURE_GEM, 20,
+            TRIDENTITE_SHARD, 25,
+            "CFG_SOVEREIGN_CORE", 10,
+            "CFG_SOVEREIGN_INGOT", 12,
+            "DAMASCUS_STEEL", 20);
+
+        addInfuser("CFG_SOVEREIGN_BOOTS", 1,
+            VOID_CRYSTAL, 12,
+            ABYSSAL_CORE, 12,
+            PRESSURE_GEM, 15,
+            TIDESTONE_FRAGMENT, 20,
+            "CFG_SOVEREIGN_INGOT", 10,
+            "REINFORCED_ALLOY_INGOT", 15,
+            "HARDENED_METAL", 15);
     }
 
     // =========================================================================
@@ -582,6 +756,18 @@ public final class ItemSetup {
             b.ingredient(id, amt);
         }
         CoralForgeWorkbench.addRecipe(b.build());
+    }
+
+    private static void addInfuser(String outputId, int outputAmount, Object... ingredientPairs) {
+        ItemStack out = sfItem(outputId);
+        out.setAmount(outputAmount);
+        WorkbenchRecipe.Builder b = WorkbenchRecipe.builder(out);
+        for (int i = 0; i + 1 < ingredientPairs.length; i += 2) {
+            String id = ingredientPairs[i].toString();
+            int amt = (int) ingredientPairs[i + 1];
+            b.ingredient(id, amt);
+        }
+        CoralForgeInfuser.addRecipe(b.build());
     }
 
     /** Get a SlimefunItem's template ItemStack, or BARRIER if not found yet. */

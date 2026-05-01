@@ -1,6 +1,7 @@
 package com.github.Syaaddd.coralForgeGrow;
 
 import com.github.Syaaddd.coralForgeGrow.listeners.ArmorListener;
+import com.github.Syaaddd.coralForgeGrow.listeners.SovereignArmorListener;
 import com.github.Syaaddd.coralForgeGrow.listeners.WeaponListener;
 import com.github.Syaaddd.coralForgeGrow.setup.Groups;
 import com.github.Syaaddd.coralForgeGrow.setup.ItemSetup;
@@ -21,6 +22,7 @@ public final class CoralForgeGrow extends JavaPlugin implements SlimefunAddon {
 
         int interval = getConfig().getInt("coralforge.armor-effect-interval", 30);
         new ArmorListener(this, interval);
+        new SovereignArmorListener(this);
         new WeaponListener(this);
 
         getLogger().info("CoralForgeGrow enabled — " + getDescription().getVersion());
